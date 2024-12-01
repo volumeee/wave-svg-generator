@@ -78,44 +78,6 @@ Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan penggu
 +------------------+----------------------+
 ```
 
-#### Project Stucture
-```
-wave-svg-generator/
-├── app/
-│   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
-├── components/
-│   ├── ui/           # shadcn components
-│   ├── wave-types/
-│   │   ├── smooth-wave.tsx
-│   │   ├── sharp-wave.tsx
-│   │   └── abstract-wave.tsx
-│   ├── config/
-│   │   ├── color-picker.tsx
-│   │   ├── wave-controls.tsx
-│   │   └── export-panel.tsx
-│   ├── preview/
-│   │   ├── preview-canvas.tsx
-│   │   └── grid-background.tsx
-│   └── shared/
-│       ├── layout/
-│       └── buttons/
-├── lib/
-│   ├── types/
-│   │   └── wave-config.ts
-│   ├── utils/
-│   │   ├── wave-generators.ts
-│   │   ├── svg-optimizer.ts
-│   │   └── color-utils.ts
-│   └── hooks/
-│       ├── use-wave-config.ts
-│       └── use-svg-generator.ts
-├── public/
-└── styles/
- tailwind.config.js
-```
-
 #### Navigation
 - Tabs untuk switching antara different wave types
 - Collapsible configuration panels
