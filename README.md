@@ -12,7 +12,7 @@ Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan penggu
 ## User Stories
 ### Sebagai pengguna, saya ingin:
 - Melihat preview wave SVG secara real-time saat melakukan konfigurasi
-- Mengatur bentuk wave (smooth, runcing, abstract) dengan mudah
+- Mengatur bentuk wave (smooth, kotak, abstract) dengan mudah
 - Mengubah warna wave sesuai keinginan
 - Mengunduh kode SVG yang telah dibuat
 - Menyalin kode SVG ke clipboard
@@ -50,9 +50,6 @@ Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan penggu
 
 #### 2. Preview Section
 - Real-time preview dengan ukuran yang dapat disesuaikan
-- Toggle grid background
-- Zoom in/out capability
-- Pan capability untuk melihat detail
 
 #### 3. Code Export
 - Format output SVG yang teroptimasi
@@ -89,11 +86,6 @@ Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan penggu
 - Smooth real-time preview updates (60fps)
 - Optimized SVG output (removed unnecessary attributes)
 
-## Security Requirements
-- Input validation untuk semua parameter
-- Sanitasi SVG output
-- Rate limiting untuk API endpoints
-
 ## Browser Support
 - Chrome (latest 2 versions)
 - Firefox (latest 2 versions)
@@ -107,9 +99,3 @@ Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan penggu
 4. Export ke format lain (PNG, CSS)
 5. Advanced animation controls
 
-## Success Metrics
-- Time spent creating waves
-- Number of downloads
-- User satisfaction rating
-- Number of returning users
-- Error rate in configuration process
