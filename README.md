@@ -1,36 +1,169 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Wave SVG Generator - Product Requirements Document
 
-## Getting Started
+## Overview
+Wave SVG Generator adalah aplikasi web berbasis Next.js yang memungkinkan pengguna untuk membuat dan mengkustomisasi bentuk gelombang (wave) SVG dengan mudah. Pengguna dapat mengatur berbagai parameter untuk menciptakan gelombang yang sesuai dengan kebutuhan mereka.
 
-First, run the development server:
+## Objectives
+1. Menyediakan interface yang user-friendly untuk membuat wave SVG
+2. Memberikan berbagai opsi kustomisasi untuk bentuk wave
+3. Menghasilkan kode SVG yang optimal dan dapat diunduh
+4. Mempercepat workflow developer dalam membuat wave SVG
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## User Stories
+### Sebagai pengguna, saya ingin:
+- Melihat preview wave SVG secara real-time saat melakukan konfigurasi
+- Mengatur bentuk wave (smooth, runcing, abstract) dengan mudah
+- Mengubah warna wave sesuai keinginan
+- Mengunduh kode SVG yang telah dibuat
+- Menyalin kode SVG ke clipboard
+- Melihat panduan penggunaan kode SVG di Next.js
+
+## Technical Requirements
+
+### Frontend Architecture
+- Framework: Next.js 14+ dengan App Router
+- Styling: Tailwind CSS
+- State Management: React Hooks (useState, useContext)
+- Components: Shadcn/ui untuk UI components
+
+### Core Features
+
+#### 1. Wave Configuration Panel
+**Bentuk Wave:**
+- Smooth Wave
+  - Kontrol untuk amplitude
+  - Kontrol untuk frekuensi
+  - Kontrol untuk fase
+- Runcing Wave
+  - Kontrol untuk ketajaman sudut
+  - Kontrol untuk jarak antar puncak
+- Abstract Wave
+  - Kontrol untuk kompleksitas
+  - Kontrol untuk randomness
+  - Seed untuk regenerasi bentuk yang sama
+
+**Warna & Tampilan:**
+- Color picker dengan format HEX/RGB/HSL
+- Opacity control (0-100%)
+- Gradient option (2 warna)
+- Background color option
+
+#### 2. Preview Section
+- Real-time preview dengan ukuran yang dapat disesuaikan
+- Toggle grid background
+- Zoom in/out capability
+- Pan capability untuk melihat detail
+
+#### 3. Code Export
+- Format output SVG yang teroptimasi
+- Copy to clipboard button
+- Download as SVG file
+- Code snippet untuk implementasi di Next.js
+- Opsi untuk menghasilkan responsive SVG
+
+#### Layout
+```
++------------------+----------------------+
+|                  |                      |
+|  Configuration   |                      |
+|     Panel        |      Preview         |
+|                  |                      |
+|  - Wave Type     |                      |
+|  - Parameters    |                      |
+|  - Colors        |                      |
+|                  |                      |
++------------------+                      |
+|   Code Output    |                      |
+|                  |                      |
++------------------+----------------------+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Project Stucture
+```
+wave-svg-generator/
+├── app/
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── ui/           # shadcn components
+│   ├── wave-types/
+│   │   ├── smooth-wave.tsx
+│   │   ├── sharp-wave.tsx
+│   │   └── abstract-wave.tsx
+│   ├── config/
+│   │   ├── color-picker.tsx
+│   │   ├── wave-controls.tsx
+│   │   └── export-panel.tsx
+│   ├── preview/
+│   │   ├── preview-canvas.tsx
+│   │   └── grid-background.tsx
+│   └── shared/
+│       ├── layout/
+│       └── buttons/
+├── lib/
+│   ├── types/
+│   │   └── wave-config.ts
+│   ├── utils/
+│   │   ├── wave-generators.ts
+│   │   ├── svg-optimizer.ts
+│   │   └── color-utils.ts
+│   └── hooks/
+│       ├── use-wave-config.ts
+│       └── use-svg-generator.ts
+├── public/
+└── styles/
+ tailwind.config.js
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Navigation
+- Tabs untuk switching antara different wave types
+- Collapsible configuration panels
+- Responsive layout untuk mobile devices
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Performance Requirements
+- First Contentful Paint < 1.5s
+- Time to Interactive < 2s
+- Smooth real-time preview updates (60fps)
+- Optimized SVG output (removed unnecessary attributes)
 
-## Learn More
+## Security Requirements
+- Input validation untuk semua parameter
+- Sanitasi SVG output
+- Rate limiting untuk API endpoints
 
-To learn more about Next.js, take a look at the following resources:
+## Browser Support
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Future Enhancements
+1. Template gallery dengan preset waves
+2. User accounts untuk menyimpan konfigurasi
+3. Share configuration via URL
+4. Export ke format lain (PNG, CSS)
+5. Advanced animation controls
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Success Metrics
+- Time spent creating waves
+- Number of downloads
+- User satisfaction rating
+- Number of returning users
+- Error rate in configuration process
 
-## Deploy on Vercel
+## Timeline
+### Phase 1 (MVP) - 2 Weeks
+- Basic wave generation
+- Essential configuration options
+- Simple export functionality
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Phase 2 - 2 Weeks
+- Advanced wave types
+- Enhanced preview capabilities
+- Improved export options
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Phase 3 - 2 Weeks
+- UI/UX improvements
+- Performance optimizations
+- Documentation
