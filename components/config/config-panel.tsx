@@ -3,6 +3,12 @@ import { Slider } from "@/components/ui/slider";
 import { WaveConfig } from "@/lib/types/wave-config";
 import { Copy, Download } from "lucide-react";
 import toast from "react-hot-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { generateWavePath } from "@/lib/utils/wave-generators";
 
 interface WaveControlsProps {
@@ -99,94 +105,161 @@ export function WaveControls({ config, onConfigChange }: WaveControlsProps) {
     <div className="bg-[#e0e0e0] p-6 space-y-4 rounded-xl shadow-[20px_20px_60px_#bebebe,-20px_-20px_60px_#ffffff]">
       <div className="flex gap-2 justify-center">
         {waveTypes.map(({ value, icon }) => (
-          <Button
-            key={value}
-            size="sm"
-            variant={config.type === value ? "ghost" : "ghost"}
-            onClick={() =>
-              onConfigChange({ ...config, type: value as WaveConfig["type"] })
-            }
-            className={`p-3 rounded-lg ${
-              config.type === value
-                ? "bg-[#e0e0e0] shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]"
-                : "bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]"
-            } transition-all`}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              fill="none"
-              strokeWidth="2"
-            >
-              {icon}
-            </svg>
-          </Button>
+          <TooltipProvider key={value}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant={config.type === value ? "ghost" : "ghost"}
+                  onClick={() =>
+                    onConfigChange({
+                      ...config,
+                      type: value as WaveConfig["type"],
+                    })
+                  }
+                  className={`p-3 rounded-lg ${
+                    config.type === value
+                      ? "bg-[#e0e0e0] shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]"
+                      : "bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]"
+                  } transition-all`}
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                  >
+                    {icon}
+                  </svg>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-white">
+                <p className="capitalize">{value} Wave</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ))}
       </div>
 
       <div className="grid gap-4">
-        {controls.map(({ label, value, min, max, step, suffix = "" }) => (
-          <div
-            key={label}
-            className="flex items-center gap-3 p-3 rounded-lg bg-[#e0e0e0] shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]"
-          >
-            <span className="text-sm w-20 text-gray-700">{label}</span>
-            <Slider
-              value={[value]}
-              onValueChange={([v]) =>
-                onConfigChange({ ...config, [label.toLowerCase()]: v })
-              }
-              min={min}
-              max={max}
-              step={step}
-              className="flex-1"
-            />
-            <span className="text-sm w-16 text-right text-gray-700">
-              {value.toFixed(1)}
-              {suffix}
-            </span>
-          </div>
-        ))}
+        <div className="flex flex-wrap gap-4">
+          {controls.map(
+            ({ label, value, min, max, step, suffix = "" }, index) => (
+              <div key={label} className="flex-1 min-w-[calc(50%-0.5rem)]">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-[#e0e0e0] shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]">
+                        <span className="text-sm w-20 text-gray-700">
+                          {label}
+                        </span>
+                        <Slider
+                          value={[value]}
+                          onValueChange={([v]) =>
+                            onConfigChange({
+                              ...config,
+                              [label.toLowerCase()]: v,
+                            })
+                          }
+                          min={min}
+                          max={max}
+                          step={step}
+                          className="flex-1"
+                        />
+                        <span className="text-sm w-16 text-right text-gray-700">
+                          {value.toFixed(1)}
+                          {suffix}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-white">
+                      <p>Adjust {label.toLowerCase()}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            )
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-center gap-3 p-3 rounded-lg bg-[#e0e0e0] shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff]">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <input
-            type="color"
-            value={config.color}
-            onChange={(e) =>
-              onConfigChange({ ...config, color: e.target.value })
-            }
-            className="w-10 h-10 rounded-lg cursor-pointer"
-          />
-          <input
-            type="text"
-            value={config.color.toUpperCase()}
-            onChange={(e) =>
-              onConfigChange({ ...config, color: e.target.value })
-            }
-            className="px-3 py-2 text-sm rounded-lg bg-[#e0e0e0] shadow-[inset_3px_3px_6px_#bebebe,inset_-3px_-3px_6px_#ffffff] border-none flex-1 sm:w-32"
-          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <input
+                  type="color"
+                  value={config.color}
+                  onChange={(e) =>
+                    onConfigChange({ ...config, color: e.target.value })
+                  }
+                  className="w-10 h-10 rounded-lg cursor-pointer"
+                />
+              </TooltipTrigger>
+              <TooltipContent className="bg-white">
+                <p>Pick a color</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <input
+                  type="text"
+                  value={config.color.toUpperCase()}
+                  onChange={(e) =>
+                    onConfigChange({ ...config, color: e.target.value })
+                  }
+                  className="px-3 py-2 text-sm rounded-lg bg-[#e0e0e0] shadow-[inset_3px_3px_6px_#bebebe,inset_-3px_-3px_6px_#ffffff] border-none flex-1 sm:w-32"
+                />
+              </TooltipTrigger>
+              <TooltipContent className="bg-white">
+                <p>Enter color code</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
+
         <div className="flex gap-2 mt-3 sm:mt-0">
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => handleSVGAction("copy")}
-            className="p-3 rounded-lg bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all"
-          >
-            <Copy className="w-4 h-4" />
-          </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => handleSVGAction("download")}
-            className="p-3 rounded-lg bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all"
-          >
-            <Download className="w-4 h-4" />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleSVGAction("copy")}
+                  className="p-3 rounded-lg bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all"
+                >
+                  <Copy className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-white">
+                <p>Copy SVG</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleSVGAction("download")}
+                  className="p-3 rounded-lg bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] hover:shadow-[inset_5px_5px_10px_#bebebe,inset_-5px_-5px_10px_#ffffff] transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="bg-white">
+                <p>Download SVG</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
